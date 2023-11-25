@@ -19,7 +19,7 @@ userRouter.get('/user/server', async (req, res) => {
 });
 
 userRouter.get('/user/client', async (req, res) => {
-  console.log('client reach BE');
+  console.log('client list user reach BE');
   if (req.body) {
     // console.log('client with body:' + JSON.stringify(req.body));
   }
