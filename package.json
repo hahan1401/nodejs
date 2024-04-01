@@ -16,7 +16,9 @@
     "multer": "^1.4.5-lts.1",
     "passport": "^0.6.0",
     "passport-facebook": "^3.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "socket": "^0.0.1",
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",

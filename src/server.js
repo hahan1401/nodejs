@@ -9,11 +9,13 @@ import passport from 'passport';
 import { userRouter } from './route/userRouter';
 import { todoRouter } from './route/todoRouter';
 import { connectTodoModel } from './models/todo.model';
+import { Server } from "socket.io";
 
 const hostname = 'localhost';
 const port = 5151;
 
 const app = express();
+const httpServer = createServer(app);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
@@ -34,6 +36,11 @@ passportFacebookConfig();
 (async () => {
   await connectUserModel();
   await connectTodoModel();
+
+  const io = new Server(httpServer, { /* options */ });
+  io.on('connection', (socket) => {
+    // ...
+  });
 
   app.get('/', async (req, res) => {
     res.end('<h1>Hello World!</h1><hr>');
