@@ -10,6 +10,8 @@ import { userRouter } from './route/userRouter';
 import { todoRouter } from './route/todoRouter';
 import { connectTodoModel } from './models/todo.model';
 import { Server } from "socket.io";
+import { createServer } from 'http';
+import { waitForAwhile } from './helper';
 
 const hostname = 'localhost';
 const port = 5151;
@@ -34,24 +36,40 @@ passportConfig();
 passportFacebookConfig();
 
 (async () => {
-  await connectUserModel();
-  await connectTodoModel();
+  // await connectUserModel();
+  // await connectTodoModel();
 
-  const io = new Server(httpServer, { /* options */ });
-  io.on('connection', (socket) => {
+  const io = new Server(httpServer, { cors: {
+    origin: "http://localhost:3000"
+  } });
+  io.on('connection', async (socket) => {
     // ...
+    console.log('socket.id----', socket.id);
+  
+    await waitForAwhile(1000).then(() => {
+      io.emit('hello', 'message 1');
+    })
+    await waitForAwhile(1000).then(() => {
+      io.emit('hello', 'message 2');
+    })
+    await waitForAwhile(1000).then(() => {
+      io.emit('hello', 'message 3');
+    })
+    await waitForAwhile(1000).then(() => {
+      io.emit('hello', 'message 4');
+    })
   });
 
   app.get('/', async (req, res) => {
     res.end('<h1>Hello World!</h1><hr>');
   });
 
-  app.use('/', uploadRouter);
-  app.use('/', loginRouter);
-  app.use('/', userRouter);
-  app.use('/', todoRouter);
+  // app.use('/', uploadRouter);
+  // app.use('/', loginRouter);
+  // app.use('/', userRouter);
+  // app.use('/', todoRouter);
 
-  app.listen(port, hostname, () => {
+  httpServer.listen(port, hostname, () => {
     // eslint-disable-next-line no-console
     console.log(`Server running at http://${hostname}:${port}/`);
   });
