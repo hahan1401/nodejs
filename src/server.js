@@ -1,19 +1,18 @@
-import cors from 'cors';
-import express from 'express';
-import { UserModel, connectUserModel } from './models/user.model';
-import { loginRouter } from './route/loginRouter';
-import { uploadRouter } from './route/uploadRouter';
-import { passportConfig, passportFacebookConfig } from './configs/appConfig';
-import session from 'express-session';
-import passport from 'passport';
-import { userRouter } from './route/userRouter';
-import { todoRouter } from './route/todoRouter';
-import { connectTodoModel } from './models/todo.model';
+import cors from "cors";
+import express from "express";
+import session from "express-session";
+import { createServer } from "http";
+import passport from "passport";
 import { Server } from "socket.io";
-import { createServer } from 'http';
-import { waitForAwhile } from './helper';
+import { passportConfig, passportFacebookConfig } from "./configs/appConfig";
+import { waitForAwhile } from "./helper";
+import { connectTodoModel } from "./models/todo.model";
+import { connectUserModel } from "./models/user.model";
+import { loginRouter } from "./route/loginRouter";
+import { todoRouter } from "./route/todoRouter";
+import { userRouter } from "./route/userRouter";
 
-const hostname = 'localhost';
+const hostname = "localhost";
 const port = 5151;
 
 const app = express();
@@ -21,10 +20,10 @@ const httpServer = createServer(app);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static('uploads'));
+app.use("/uploads", express.static("uploads"));
 app.use(
   session({
-    secret: 'your-secret-key',
+    secret: "your-secret-key",
     resave: false,
     saveUninitialized: false,
   })
@@ -36,38 +35,51 @@ passportConfig();
 passportFacebookConfig();
 
 (async () => {
-  // await connectUserModel();
-  // await connectTodoModel();
+  await connectUserModel();
+  await connectTodoModel();
 
-  const io = new Server(httpServer, { cors: {
-    origin: "http://localhost:3000"
-  } });
-  io.on('connection', async (socket) => {
+  const io = new Server(httpServer, {
+    cors: {
+      origin: "http://localhost:3001",
+    },
+  });
+  io.on("connection", async (socket) => {
     // ...
-    console.log('socket.id----', socket.id);
-  
+    console.log("================socket.id===========", socket.id);
+
     await waitForAwhile(1000).then(() => {
-      io.emit('hello', 'message 1');
-    })
+      io.emit("hello", { message: "message 1" });
+    });
     await waitForAwhile(1000).then(() => {
-      io.emit('hello', 'message 2');
-    })
+      io.emit("hello", { message: "message 2" });
+    });
     await waitForAwhile(1000).then(() => {
-      io.emit('hello', 'message 3');
-    })
+      io.emit("hello", { message: "message 3" });
+    });
     await waitForAwhile(1000).then(() => {
-      io.emit('hello', 'message 4');
-    })
+      io.emit("hello", { message: "message 4" });
+    });
+
+    console.log("io.engine.clientsCount", io.engine.clientsCount);
   });
 
-  app.get('/', async (req, res) => {
-    res.end('<h1>Hello World!</h1><hr>');
+  io.on("disconnect", async () => {
+    console.log("=============disconect===============");
+  });
+
+  io.on("end", function (val) {
+    console.log("val----------", val);
+    io.disconnect(0);
+  });
+
+  app.get("/", async (req, res) => {
+    res.end("<h1>Hello World!</h1><hr>");
   });
 
   // app.use('/', uploadRouter);
-  // app.use('/', loginRouter);
-  // app.use('/', userRouter);
-  // app.use('/', todoRouter);
+  app.use("/", loginRouter);
+  app.use("/", userRouter);
+  app.use("/", todoRouter);
 
   httpServer.listen(port, hostname, () => {
     // eslint-disable-next-line no-console
