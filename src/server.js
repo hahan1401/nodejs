@@ -9,6 +9,7 @@ import { waitForAwhile } from "./helper";
 import { connectTodoModel } from "./models/todo.model";
 import { connectUserModel } from "./models/user.model";
 import { loginRouter } from "./route/loginRouter";
+import { sseRouter } from "./route/sse";
 import { todoRouter } from "./route/todoRouter";
 import { userRouter } from "./route/userRouter";
 
@@ -80,6 +81,7 @@ passportFacebookConfig();
   app.use("/", loginRouter);
   app.use("/", userRouter);
   app.use("/", todoRouter);
+  app.use("/", sseRouter);
 
   httpServer.listen(port, hostname, () => {
     // eslint-disable-next-line no-console
