@@ -8,6 +8,7 @@ import { passportConfig, passportFacebookConfig } from "./configs/appConfig";
 import { waitForAwhile } from "./helper";
 import { connectTodoModel } from "./models/todo.model";
 import { connectUserModel } from "./models/user.model";
+import { ilovepdfRouter } from "./route/ilovepdf";
 import { loginRouter } from "./route/loginRouter";
 import { sseRouter } from "./route/sse";
 import { todoRouter } from "./route/todoRouter";
@@ -82,6 +83,7 @@ passportFacebookConfig();
   app.use("/", userRouter);
   app.use("/", todoRouter);
   app.use("/", sseRouter);
+  app.use("/", ilovepdfRouter);
 
   httpServer.listen(port, hostname, () => {
     // eslint-disable-next-line no-console

@@ -1489,6 +1489,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ilovepdf/ilovepdf-js-core@npm:^0.2.4, @ilovepdf/ilovepdf-js-core@npm:~0.2.0":
+  version: 0.2.4
+  resolution: "@ilovepdf/ilovepdf-js-core@npm:0.2.4"
+  dependencies:
+    axios: "npm:^0.21.1"
+    form-data: "npm:^3.0.0"
+    jsonwebtoken: "npm:^8.5.1"
+  checksum: ea13abdc6afd9ed42f6f84c7c3fa92f2e4688d163932388ca30579377ce4531ec12406a00c8dc2b57cad05c36a7ac96e5352e4da5a975d75a258c8128a047518
+  languageName: node
+  linkType: hard
+
+"@ilovepdf/ilovepdf-js@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@ilovepdf/ilovepdf-js@npm:0.2.2"
+  dependencies:
+    "@ilovepdf/ilovepdf-js-core": "npm:^0.2.4"
+  checksum: 6c0ad596de2ea81140297163c26d52138567a67275ac1a2220b33faa3bfc85cdf3e74f493d725b75cc04708695274b808038c0a2e9825b977d7f8d90f245325b
+  languageName: node
+  linkType: hard
+
+"@ilovepdf/ilovepdf-nodejs@npm:^0.2.5":
+  version: 0.2.5
+  resolution: "@ilovepdf/ilovepdf-nodejs@npm:0.2.5"
+  dependencies:
+    "@ilovepdf/ilovepdf-js-core": "npm:~0.2.0"
+  checksum: 4570bd41a1b810e27c574b459af34b8b3bcbe794d3816de229149f0f5b0f23eb968d9a9298a3b9283db07e05af18ab71039c9cb5bc6647fc4bb86bf4642d1839
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -1964,10 +1993,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"asynckit@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "asynckit@npm:0.4.0"
+  checksum: d73e2ddf20c4eb9337e1b3df1a0f6159481050a5de457c55b14ea2e5cb6d90bb69e004c9af54737a5ee0917fcf2c9e25de67777bbe58261847846066ba75bc9d
+  languageName: node
+  linkType: hard
+
 "available-typed-arrays@npm:^1.0.5":
   version: 1.0.5
   resolution: "available-typed-arrays@npm:1.0.5"
   checksum: c4df567ca72d2754a6cbad20088f5f98b1065b3360178169fa9b44ea101af62c0f423fc3854fa820fd6895b6b9171b8386e71558203103ff8fc2ad503fdcc660
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.21.1":
+  version: 0.21.4
+  resolution: "axios@npm:0.21.4"
+  dependencies:
+    follow-redirects: "npm:^1.14.0"
+  checksum: fbcff55ec68f71f02d3773d467db2fcecdf04e749826c82c2427a232f9eba63242150a05f15af9ef15818352b814257541155de0281f8fb2b7e8a5b79f7f2142
   languageName: node
   linkType: hard
 
@@ -2031,6 +2076,8 @@ __metadata:
     "@babel/plugin-transform-runtime": "npm:^7.22.10"
     "@babel/preset-env": "npm:^7.22.10"
     "@babel/runtime": "npm:^7.22.10"
+    "@ilovepdf/ilovepdf-js": "npm:^0.2.2"
+    "@ilovepdf/ilovepdf-nodejs": "npm:^0.2.5"
     "@types/express": "npm:^4.17.21"
     babel-plugin-module-resolver: "npm:^5.0.0"
     cors: "npm:^2.8.5"
@@ -2318,6 +2365,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"combined-stream@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "combined-stream@npm:1.0.8"
+  dependencies:
+    delayed-stream: "npm:~1.0.0"
+  checksum: 0dbb829577e1b1e839fa82b40c07ffaf7de8a09b935cadd355a73652ae70a88b4320db322f6634a4ad93424292fa80973ac6480986247f1734a1137debf271d5
+  languageName: node
+  linkType: hard
+
 "commander@npm:^4.0.1":
   version: 4.1.1
   resolution: "commander@npm:4.1.1"
@@ -2495,6 +2551,13 @@ __metadata:
     has-property-descriptors: "npm:^1.0.0"
     object-keys: "npm:^1.1.1"
   checksum: 88a152319ffe1396ccc6ded510a3896e77efac7a1bfbaa174a7b00414a1747377e0bb525d303794a47cf30e805c2ec84e575758512c6e44a993076d29fd4e6c3
+  languageName: node
+  linkType: hard
+
+"delayed-stream@npm:~1.0.0":
+  version: 1.0.0
+  resolution: "delayed-stream@npm:1.0.0"
+  checksum: d758899da03392e6712f042bec80aa293bbe9e9ff1b2634baae6a360113e708b91326594c8a486d475c69d6259afb7efacdc3537bfcda1c6c648e390ce601b19
   languageName: node
   linkType: hard
 
@@ -3046,6 +3109,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.14.0":
+  version: 1.15.6
+  resolution: "follow-redirects@npm:1.15.6"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 9ff767f0d7be6aa6870c82ac79cf0368cd73e01bbc00e9eb1c2a16fbb198ec105e3c9b6628bb98e9f3ac66fe29a957b9645bcb9a490bb7aa0d35f908b6b85071
+  languageName: node
+  linkType: hard
+
 "for-each@npm:^0.3.3":
   version: 0.3.3
   resolution: "for-each@npm:0.3.3"
@@ -3062,6 +3135,17 @@ __metadata:
     cross-spawn: "npm:^7.0.0"
     signal-exit: "npm:^4.0.1"
   checksum: 9700a0285628abaeb37007c9a4d92bd49f67210f09067638774338e146c8e9c825c5c877f072b2f75f41dc6a2d0be8664f79ffc03f6576649f54a84fb9b47de0
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "form-data@npm:3.0.1"
+  dependencies:
+    asynckit: "npm:^0.4.0"
+    combined-stream: "npm:^1.0.8"
+    mime-types: "npm:^2.1.12"
+  checksum: 1ccc3ae064a080a799923f754d49fcebdd90515a8924f0f54de557540b50e7f1fe48ba5f2bd0435a5664aa2d49729107e6aaf2155a9abf52339474c5638b4485
   languageName: node
   linkType: hard
 
@@ -3804,6 +3888,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonwebtoken@npm:^8.5.1":
+  version: 8.5.1
+  resolution: "jsonwebtoken@npm:8.5.1"
+  dependencies:
+    jws: "npm:^3.2.2"
+    lodash.includes: "npm:^4.3.0"
+    lodash.isboolean: "npm:^3.0.3"
+    lodash.isinteger: "npm:^4.0.4"
+    lodash.isnumber: "npm:^3.0.3"
+    lodash.isplainobject: "npm:^4.0.6"
+    lodash.isstring: "npm:^4.0.1"
+    lodash.once: "npm:^4.0.0"
+    ms: "npm:^2.1.1"
+    semver: "npm:^5.6.0"
+  checksum: c5ad937b6fa23a230efa8ed8ca3c0da8ebfdd377bafc3e8432a11b03ef90e733400a00b26c0dfee47db44a2e64b88b154b57e9926a92990f98dd25aaed15006e
+  languageName: node
+  linkType: hard
+
 "jsonwebtoken@npm:^9.0.2":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
@@ -4047,7 +4149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
+"mime-types@npm:^2.1.12, mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
