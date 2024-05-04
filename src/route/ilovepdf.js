@@ -48,15 +48,12 @@ ilovepdfRouter.post("/ilovepdf/signature/send", async (req, res) => {
       return task.process();
     })
     .then((response) => {
-      console.log(response);
       res.json(response);
     });
 });
 
 ilovepdfRouter.get("/ilovepdf/signature/list", async (req, res) => {
   const token = await getIlovepdfTocken(req.body);
-
-  console.log("token", token);
 
   await fetcher(
     "https://api.ilovepdf.com/v1/signature/list?page=0&per-page=100",
@@ -74,7 +71,7 @@ ilovepdfRouter.get("/ilovepdf/signature/list", async (req, res) => {
 ilovepdfRouter.post("/ilovepdf/download-original", async (req, res) => {
   const token = await getIlovepdfTocken();
   const pdfResp = await fetcher(
-    `https://api.ilovepdf.com/v1/${req.tokenRequester}/download-original`,
+    `https://api.ilovepdf.com/v1/signature/${req.body.tokenRequester}/download-original`,
     {
       method: "GET",
       headers: {
@@ -87,15 +84,22 @@ ilovepdfRouter.post("/ilovepdf/download-original", async (req, res) => {
   pdfResp.arrayBuffer().then((buf) => {
     res.send(Buffer.from(buf));
   });
+});
 
-  // .then((resp) => {
-  //   console.log(resp);
-  //   return resp.arrayBuffer();
-  // })
-  // .then((resp) => {
-  //   console.log(resp);
-  //   res.setHeader("Content-Length", resp.byteLength);
-  //   res.setHeader("content-type", "application/pdf");
-  //   res.send(resp);
-  // });
+ilovepdfRouter.post("/ilovepdf/download-signed", async (req, res) => {
+  const token = await getIlovepdfTocken();
+  const pdfResp = await fetcher(
+    `https://api.ilovepdf.com/v1/signature/${req.body.tokenRequester}/download-signed`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+    }
+  );
+
+  res.type("application/pdf");
+  pdfResp.arrayBuffer().then((buf) => {
+    res.send(Buffer.from(buf));
+  });
 });
