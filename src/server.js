@@ -1,4 +1,5 @@
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
 import { createServer } from "http";
@@ -14,6 +15,7 @@ import { sseRouter } from "./route/sse";
 import { todoRouter } from "./route/todoRouter";
 import { userRouter } from "./route/userRouter";
 
+dotenv.config();
 const hostname = "localhost";
 const port = 5151;
 
@@ -83,7 +85,7 @@ passportFacebookConfig();
   app.use("/", userRouter);
   app.use("/", todoRouter);
   app.use("/", sseRouter);
-  app.use("/", ilovepdfRouter);
+  app.use("/ilovepdf", ilovepdfRouter);
 
   httpServer.listen(port, hostname, () => {
     // eslint-disable-next-line no-console

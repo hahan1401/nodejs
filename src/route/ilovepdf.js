@@ -1,6 +1,7 @@
 import SignatureFile from "@ilovepdf/ilovepdf-js-core/tasks/sign/elements/SignatureFile";
 import Signer from "@ilovepdf/ilovepdf-js-core/tasks/sign/receivers/Signer";
 import ILovePDFApi from "@ilovepdf/ilovepdf-nodejs";
+import dotenv from "dotenv";
 import express from "express";
 import {
   getIlovepdfTocken,
@@ -8,14 +9,23 @@ import {
 } from "~/services/ilovepdf";
 import fetcher from "~/utils";
 
+const DUMMY_PDF =
+  "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+const SAMPLE_PDF = "https://pdfobject.com/pdf/sample.pdf";
+
+const DUMMY_DOC =
+  "https://test.cdn.one.fandelo.com/document/389cf6ce-f550-432f-ae99-037e2e8e2252/1b7f3c2c820a4b5dad58db067b23b4f2.doc";
+
+dotenv.config();
 export const ilovepdfRouter = express.Router();
 
-ilovepdfRouter.post("/ilovepdf/token", getIlovepdfTockenAndResponse);
+ilovepdfRouter.post("/token", getIlovepdfTockenAndResponse);
 
-ilovepdfRouter.post("/ilovepdf/signature/send", async (req, res) => {
+ilovepdfRouter.post("/signature/send", async (req, res) => {
   const instance = new ILovePDFApi(
-    "project_public_01cc8a7ca79ae51e0581a4ee868beb03_4MNvs55130f5bb33943f49ce089da4c50f722",
-    "secret_key_a85681ca8ac387572696873553da4763_WuWXcae3e8b5e42020d84dda8a1321f1ee2b7"
+    process.env.ILOVEPDF_PUBLIC_KEY,
+    process.env.ILOVEPDF_PRIVATE_KEY
   );
 
   const task = instance.newTask("sign");
@@ -23,9 +33,7 @@ ilovepdfRouter.post("/ilovepdf/signature/send", async (req, res) => {
   task
     .start()
     .then(() => {
-      return task.addFile(
-        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-      );
+      return task.addFile(DUMMY_PDF);
     })
     .then((file) => {
       const signatureFile = new SignatureFile(file, [
@@ -40,7 +48,7 @@ ilovepdfRouter.post("/ilovepdf/signature/send", async (req, res) => {
       return signatureFile;
     })
     .then((signatureFile) => {
-      const signer = new Signer("hahan", "hanvietha141@gmail.com");
+      const signer = new Signer("hahan+10", "hanvietha141@gmail.com");
       signer.addFile(signatureFile);
       task.addReceiver(signer);
     })
@@ -52,7 +60,7 @@ ilovepdfRouter.post("/ilovepdf/signature/send", async (req, res) => {
     });
 });
 
-ilovepdfRouter.get("/ilovepdf/signature/list", async (req, res) => {
+ilovepdfRouter.get("/signature/list", async (req, res) => {
   const token = await getIlovepdfTocken(req.body);
 
   await fetcher(
@@ -68,7 +76,7 @@ ilovepdfRouter.get("/ilovepdf/signature/list", async (req, res) => {
     .then((resp) => res.json(resp));
 });
 
-ilovepdfRouter.post("/ilovepdf/download-original", async (req, res) => {
+ilovepdfRouter.post("/download-original", async (req, res) => {
   const token = await getIlovepdfTocken();
   const pdfResp = await fetcher(
     `https://api.ilovepdf.com/v1/signature/${req.body.tokenRequester}/download-original`,
@@ -86,7 +94,7 @@ ilovepdfRouter.post("/ilovepdf/download-original", async (req, res) => {
   });
 });
 
-ilovepdfRouter.post("/ilovepdf/download-signed", async (req, res) => {
+ilovepdfRouter.post("/download-signed", async (req, res) => {
   const token = await getIlovepdfTocken();
   const pdfResp = await fetcher(
     `https://api.ilovepdf.com/v1/signature/${req.body.tokenRequester}/download-signed`,
@@ -102,4 +110,107 @@ ilovepdfRouter.post("/ilovepdf/download-signed", async (req, res) => {
   pdfResp.arrayBuffer().then((buf) => {
     res.send(Buffer.from(buf));
   });
+});
+
+ilovepdfRouter.post("/to-pdf", async (req, res) => {
+  const instance = new ILovePDFApi(
+    process.env.ILOVEPDF_PUBLIC_KEY,
+    process.env.ILOVEPDF_PRIVATE_KEY
+  );
+
+  const task = instance.newTask("officepdf");
+
+  task
+    .start()
+    .then(() => {
+      return task.addFile(DUMMY_DOC); // .doc file
+    })
+    .then(() => {
+      return task.process();
+    })
+    .then(() => {
+      return task.download();
+    })
+    .then((resp) => {
+      res.type("application/pdf");
+      res.send(Buffer.from(resp));
+    });
+});
+
+ilovepdfRouter.post("/water-mark", async (req, res) => {
+  const instance = new ILovePDFApi(
+    process.env.ILOVEPDF_PUBLIC_KEY,
+    process.env.ILOVEPDF_PRIVATE_KEY
+  );
+
+  const task = instance.newTask("watermark");
+
+  task
+    .start()
+    .then(() => {
+      return task.addFile(DUMMY_PDF);
+    })
+    .then(() => {
+      return task.process({ text: "myWatermarkText" });
+    })
+    .then(() => {
+      return task.download();
+    })
+    .then((resp) => {
+      res.type("application/pdf");
+      res.send(Buffer.from(resp));
+    });
+});
+
+ilovepdfRouter.post("/protect", async (req, res) => {
+  const instance = new ILovePDFApi(
+    process.env.ILOVEPDF_PUBLIC_KEY,
+    process.env.ILOVEPDF_PRIVATE_KEY
+  );
+
+  const task = instance.newTask("protect");
+
+  task
+    .start()
+    .then(() => {
+      return task.addFile(DUMMY_PDF);
+    })
+    .then(() => {
+      return task.process({ password: "test" });
+    })
+    .then(() => {
+      return task.download();
+    })
+    .then((resp) => {
+      res.type("application/pdf");
+      res.send(Buffer.from(resp));
+    });
+});
+
+ilovepdfRouter.post("/merge", async (req, res) => {
+  const instance = new ILovePDFApi(
+    process.env.ILOVEPDF_PUBLIC_KEY,
+    process.env.ILOVEPDF_PRIVATE_KEY
+  );
+
+  const task = instance.newTask("merge");
+
+  task
+    .start()
+    .then(() => {
+      return task.addFile(DUMMY_PDF);
+    })
+    .then(() => {
+      return task.addFile(SAMPLE_PDF);
+    })
+    .then(() => {
+      return task.process({});
+    })
+    .then(() => {
+      return task.download();
+    })
+    .then((resp) => {
+      res.type("application/pdf");
+      res.send(Buffer.from(resp));
+    });
 });

@@ -1,11 +1,12 @@
+import dotenv from "dotenv";
 import fetcher from "~/utils";
 
+dotenv.config();
 export const getIlovepdfTocken = async () =>
   await fetcher("https://api.ilovepdf.com/v1/auth", {
     method: "POST",
     body: JSON.stringify({
-      public_key:
-        "project_public_01cc8a7ca79ae51e0581a4ee868beb03_4MNvs55130f5bb33943f49ce089da4c50f722",
+      public_key: process.env.ILOVEPDF_PUBLIC_KEY,
     }),
   })
     .then((resp) => resp.json())
